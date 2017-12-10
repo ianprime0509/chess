@@ -1,4 +1,4 @@
-CFLAGS ?= -O2 -Wall -Wextra -g
+CFLAGS ?= -O0 -Wall -Wextra -g
 
 .PHONY = all clean
 

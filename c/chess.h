@@ -8,13 +8,13 @@
 #include <stdbool.h>
 
 /**
- * The number of rows on the board.
+ * The number of ranks (rows) on the board.
  */
-#define BOARD_ROWS 8
+#define BOARD_RANKS 8
 /**
- * The number of columns on the board.
+ * The number of files (columns) on the board.
  */
-#define BOARD_COLUMNS 8
+#define BOARD_FILES 8
 
 /**
  * The type of a piece.
@@ -58,7 +58,7 @@ struct game {
      * notation, so that the square b7 would be board[1][6] (note the
      * 0-indexing).
      */
-    struct piece *board[BOARD_COLUMNS][BOARD_ROWS];
+    struct piece *board[BOARD_FILES][BOARD_RANKS];
     /**
      * Pointer to a pawn eligible to be taken en passant.
      *
@@ -68,16 +68,35 @@ struct game {
      * passant.
      */
     struct piece *en_passant;
+    /**
+     * Whether it is white's turn.
+     */
+    bool white_turn;
 };
 
 /**
  * Creates a piece with the given type and color.
  */
-struct piece *piece_create(enum piece_type type, bool is_white);
+struct piece *piece_new(enum piece_type type, bool is_white);
+
 /**
  * Initializes a new game with the standard starting board.
  */
-struct game *game_create(void);
+struct game *game_new(void);
+/**
+ * Destroys the given game, freeing all its memory.
+ */
+void game_destroy(struct game *game);
+/**
+ * Processes the given move (in algebraic notation) and performs it if possible.
+ *
+ * If the move is impossible (illegal), an error message will be printed to
+ * stdout with a description of the cause.
+ *
+ * @return An error code (e.g. if the move was illegal or if the move was in an
+ * invalid format).
+ */
+int game_move(struct game *game, const char *move);
 /**
  * Pretty-prints the current game board to stdout.
  */
